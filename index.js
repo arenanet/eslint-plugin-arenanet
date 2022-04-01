@@ -1,9 +1,9 @@
 const ERROR_MSG_NO_REQ_FOUND = "Reply must respond with request";
 
-function report(context, node) {
+function report(context, node, message) {
     return context.report({
         node,
-        message : ERROR_MSG_NO_REQ_FOUND
+        message
     });
 }
 
@@ -24,13 +24,13 @@ module.exports = {
                         const arg = baseReply ? node.arguments[0] : node.arguments[1];
 
                         if (!arg || !arg.properties) {
-                            return report(context, node);
+                            return report(context, node, ERROR_MSG_NO_REQ_FOUND);
                         }
 
                         const hasReq = Boolean(arg.properties.filter((prop) => prop.key && prop.key.name === "req").length);
 
                         if (!hasReq) {
-                            return report(context, node);
+                            return report(context, node, ERROR_MSG_NO_REQ_FOUND);
                         }
                     }
                 };
