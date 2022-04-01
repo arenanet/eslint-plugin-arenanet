@@ -1,5 +1,5 @@
 {
-    "name": "eslint-plugin-njs",
+    "name": "eslint-plugin-arenanet",
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
