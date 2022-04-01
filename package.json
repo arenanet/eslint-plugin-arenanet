@@ -1,0 +1,12 @@
+{
+    "name": "eslint-plugin-njs",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha tests/reply-with-request"
+    },
+    "devDependencies": {
+        "eslint": "^8.12.0",
+        "mocha": "^9.2.2"
+    }
+}
