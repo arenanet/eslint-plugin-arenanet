@@ -1,4 +1,5 @@
 const ERROR_MSG_NO_REQ_FOUND = "Reply must respond with request";
+const ERROR_USE_STRICT_AT_TOP = "use strict must be at top of document";
 
 function report(context, node, message) {
     return context.report({
@@ -53,6 +54,27 @@ module.exports = {
                     }
                 };
             }
+        },
+        "use-strict-at-top-of-document" : {
+            create : function(context) {
+                return {
+                    Program(node) {
+                        const firstChild = node.body[0];
+
+                        if (firstChild.type !== "ExpressionStatement") {
+                            return report(context, node, ERROR_USE_STRICT_AT_TOP);
+                        }
+
+                        if (firstChild.expression.value !== "use strict") {
+                            return report(context, node, ERROR_USE_STRICT_AT_TOP);
+                        }
+                    }
+                }
+            }
         }
+    },
+    errors : {
+        ERROR_MSG_NO_REQ_FOUND,
+        ERROR_USE_STRICT_AT_TOP
     }
 };
