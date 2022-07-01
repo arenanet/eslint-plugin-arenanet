@@ -18,10 +18,10 @@ ruleTester.run("reply-with-request", rule, {
             code : "reply.json({}, { req : {} })"
         },
         {
-            code : "reply.template({}, { req })"
+            code : "reply.template({}, {}, { req })"
         },
         {
-            code : "reply.template({}, { req : {} })"
+            code : "reply.template({}, {}, { req : {} })"
         }
     ],
     invalid : [
