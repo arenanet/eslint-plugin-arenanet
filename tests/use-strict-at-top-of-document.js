@@ -4,7 +4,7 @@ const RuleTester = require("eslint").RuleTester;
 
 const ruleTester = new RuleTester({ parserOptions : { ecmaVersion : 2017 } });
 
-ruleTester.run("reply-with-request", rule, {
+ruleTester.run("use-strict-at-top-of-document", rule, {
     valid : [
         {
             code : `
