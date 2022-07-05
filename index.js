@@ -61,6 +61,10 @@ module.exports = {
                     Program(node) {
                         const firstChild = node.body[0];
 
+                        if (!firstChild) {
+                            return;
+                        }
+
                         if (firstChild.type !== "ExpressionStatement") {
                             return report(context, node, ERROR_USE_STRICT_AT_TOP);
                         }

@@ -12,6 +12,9 @@ ruleTester.run("use-strict-at-top-of-document", rule, {
 
 function test() {}
 `
+        },
+        {
+            code : ""
         }
     ],
     invalid : [
