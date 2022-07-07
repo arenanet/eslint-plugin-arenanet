@@ -1,5 +1,8 @@
-const ERROR_MSG_NO_REQ_FOUND = "Reply must respond with request";
-const ERROR_USE_STRICT_AT_TOP = "use strict must be at top of document";
+const errors = {
+    ERROR_MITHRIL_VIEW_MUST_RETURN : "Mithril view must return",
+    ERROR_MSG_NO_REQ_FOUND : "Reply must respond with request",
+    ERROR_USE_STRICT_AT_TOP : "use strict must be at top of document"
+};
 
 function report(context, node, message) {
     return context.report({
@@ -10,6 +13,33 @@ function report(context, node, message) {
 
 module.exports = {
     rules : {
+        "mithril-view-must-return" : {
+            create : function(context) {
+                return {
+                    Property(node) {
+                        if (node.key.name !== "view") {
+                            return;
+                        }
+
+                        if (node.value.type !== "FunctionExpression" && node.value.type !== "ArrowFunctionExpression") {
+                            return report(context, node, errors.ERROR_MITHRIL_VIEW_MUST_RETURN);
+                        }
+
+                        // captures:
+                        // { view() {} }
+                        // { view : () => {} }
+                        // no need to check if it's neither of these, if it's an arrow return then the rule is satisfied
+                        if (node.value.type === "FunctionExpression" || node.value.body.type === "BlockStatement") {
+                            const returnStatement = Boolean(node.value.body.body.filter((el) => el.type === "ReturnStatement").length)
+
+                            if (!returnStatement) {
+                                return report(context, node, errors.ERROR_MITHRIL_VIEW_MUST_RETURN);
+                            }
+                        }
+                    }
+                };
+            }
+        },
         "reply-with-request" : {
             create : function(context) {
                 return {
@@ -37,19 +67,19 @@ module.exports = {
                         }
 
                         if (!arg) {
-                            return report(context, node, ERROR_MSG_NO_REQ_FOUND);
+                            return report(context, node, errors.ERROR_MSG_NO_REQ_FOUND);
                         }
 
                         const properties = arg.properties;
 
                         if (!properties) {
-                            return report(context, node, ERROR_MSG_NO_REQ_FOUND);
+                            return report(context, node, errors.ERROR_MSG_NO_REQ_FOUND);
                         }
 
                         const hasReq = Boolean(properties.filter((prop) => prop.key && prop.key.name === "req").length);
 
                         if (!hasReq) {
-                            return report(context, node, ERROR_MSG_NO_REQ_FOUND);
+                            return report(context, node, errors.ERROR_MSG_NO_REQ_FOUND);
                         }
                     }
                 };
@@ -66,19 +96,16 @@ module.exports = {
                         }
 
                         if (firstChild.type !== "ExpressionStatement") {
-                            return report(context, node, ERROR_USE_STRICT_AT_TOP);
+                            return report(context, node, errors.ERROR_USE_STRICT_AT_TOP);
                         }
 
                         if (firstChild.expression.value !== "use strict") {
-                            return report(context, node, ERROR_USE_STRICT_AT_TOP);
+                            return report(context, node, errors.ERROR_USE_STRICT_AT_TOP);
                         }
                     }
-                }
+                };
             }
         }
     },
-    errors : {
-        ERROR_MSG_NO_REQ_FOUND,
-        ERROR_USE_STRICT_AT_TOP
-    }
+    errors
 };
