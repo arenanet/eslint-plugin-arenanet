@@ -28,7 +28,7 @@ module.exports = {
                         function returnFound(body) {
                             return body.some((node) => {
                                 if (node.type === "IfStatement") {
-                                     return returnFound(node.consequent.body);
+                                    return returnFound(node.consequent.body);
                                 }
 
                                 if (node.type === "SwitchStatement") {
