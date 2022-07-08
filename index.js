@@ -25,12 +25,28 @@ module.exports = {
                             return report(context, node, errors.ERROR_MITHRIL_VIEW_MUST_RETURN);
                         }
 
+                        function returnFound(body) {
+                            return body.some((node) => {
+                                  if (node.type === "IfStatement") {
+                                     return returnFound(node.consequent.body);
+                                }
+
+                                  if (node.type === "SwitchStatement") {
+                                    return node.cases.some((switchCase) => returnFound(switchCase.consequent));
+                                }
+
+                                if (node.type === "ReturnStatement") {
+                                    return true;
+                                }
+                            });
+                        }
+
                         // captures:
                         // { view() {} }
                         // { view : () => {} }
                         // no need to check if it's neither of these, if it's an arrow return then the rule is satisfied
                         if (node.value.type === "FunctionExpression" || node.value.body.type === "BlockStatement") {
-                            const returnStatement = Boolean(node.value.body.body.filter((el) => el.type === "ReturnStatement").length)
+                            const returnStatement = returnFound(node.value.body.body);
 
                             if (!returnStatement) {
                                 return report(context, node, errors.ERROR_MITHRIL_VIEW_MUST_RETURN);
