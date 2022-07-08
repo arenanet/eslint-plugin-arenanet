@@ -27,11 +27,11 @@ module.exports = {
 
                         function returnFound(body) {
                             return body.some((node) => {
-                                  if (node.type === "IfStatement") {
+                                if (node.type === "IfStatement") {
                                      return returnFound(node.consequent.body);
                                 }
 
-                                  if (node.type === "SwitchStatement") {
+                                if (node.type === "SwitchStatement") {
                                     return node.cases.some((switchCase) => returnFound(switchCase.consequent));
                                 }
 
