@@ -27,6 +27,66 @@ const component = {
         return "";
     }
 }`
+        },
+        {
+            code : `
+const component = {
+    view() {
+        const foo = 1;
+
+        if (foo) {
+            if (true) {
+                console.log("foo");
+            }
+            console.log("foo");
+        }
+
+        return "";
+    }
+}`
+        },
+        {
+            code : `
+const component = {
+    view() {
+        const foo = 1;
+
+        if (foo) {
+            if (true) {
+                return "";
+            }
+            console.log("foo");
+        }
+    }
+}`
+        },
+        {
+            code :`
+const component = {
+    view() {
+        const foo = 1;
+
+        switch(foo) {
+            case 1:
+            case 2:
+            default:
+                return "";
+        }
+    }
+}`
+        },
+        {
+            code :`
+const component = {
+    view() {
+        const foo = 1;
+
+        switch(foo) {
+            case 1: return "";
+            default: return "";
+        }
+    }
+}`
         }
     ],
     invalid : [
@@ -44,6 +104,33 @@ const component = {
 const component = {
     view : () => {
         const a = true;
+    }
+}`,
+            errors : [{ message : error }]
+        },
+        {
+            code : `
+const component = {
+    view : () => {
+        if (true) {
+            console.log("foo");
+        }
+    }
+}`,
+            errors : [{ message : error }]
+        },
+        {
+            code : `
+const component = {
+    view() {
+        const foo = 1;
+
+        switch (foo) {
+            case 1:
+                console.log("foo");
+            default:
+                console.log("goo");
+        }
     }
 }`,
             errors : [{ message : error }]
