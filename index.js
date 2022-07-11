@@ -25,7 +25,7 @@ module.exports = {
                             return report(context, node, errors.ERROR_MITHRIL_VIEW_MUST_RETURN);
                         }
 
-                        function returnFound(body) {
+                        function returnFound(body = []) {
                             return body.some((node) => {
                                 if (node.type === "IfStatement") {
                                     return returnFound(node.consequent.body);
