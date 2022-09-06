@@ -8,6 +8,10 @@ This is intended to be included in `eslint-config-arenanet`, with all custom rul
 
 Mithril views must return something in order to be rendered.
 
+### `must-await-playwright-expect`
+
+Playwright can use sync or async `expect`. This rule enforces using the async behavior to avoid confusing behavior. https://playwright.dev/docs/test-assertions 
+
 ### `reply-with-request`
 
 Guarantees backend response includes request object.
