@@ -10,7 +10,7 @@ const errors = {
  * @param {object} context - eslint context, helpful for rules to do their job
  * @param {object} node - node being looked at in the AST
  * @param {string} message - error message
- * @param {function} fixer - autofixes the code
+ * @param {function} [fix] - autofixes the code
  * @returns
  */
 function report({ context, node, message, fix = new Function() }) {
@@ -69,7 +69,9 @@ module.exports = {
         "must-await-playwright-expect" : {
             meta : {
                 type : "problem",
-                docs : "Playwright's `expect` can be sync or async. This rule enforces the use of the async pattern to avoid confusing behavior.",
+                docs : {
+                    description: "Playwright's `expect` can be sync or async. This rule enforces the use of the async pattern to avoid confusing behavior."
+                },
                 fixable : "code"
             },
             create : function(context) {
@@ -80,10 +82,6 @@ module.exports = {
                               node.expression.callee.object &&
                               node.expression.callee.object.callee &&
                               node.expression.callee.object.callee.name === "expect";
-
-                        if (!isExpect) {
-                          return;
-                        }
 
                         if (isExpect && node.expression.type !== "AwaitExpression") {
                             return report({
