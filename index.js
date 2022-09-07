@@ -143,6 +143,10 @@ module.exports = {
             }
         },
         "use-strict-at-top-of-document" : {
+            meta : {
+                type : "problem",
+                fixable : "code"
+            },
             create : function(context) {
                 return {
                     Program(node) {
@@ -152,12 +156,15 @@ module.exports = {
                             return;
                         }
 
-                        if (firstChild.type !== "ExpressionStatement") {
-                            return report({ context, node, message : errors.ERROR_USE_STRICT_AT_TOP });
-                        }
-
-                        if (firstChild.expression.value !== "use strict") {
-                            return report({ context, node, message : errors.ERROR_USE_STRICT_AT_TOP });
+                        if (firstChild.type !== "ExpressionStatement" || firstChild.expression.value !== "use strict") {
+                            return report({
+                                context,
+                                node,
+                                message : errors.ERROR_USE_STRICT_AT_TOP,
+                                fix(fixer) {
+                                    fixer.insertTextBefore(node, `"use strict";\n\n`);
+                                }
+                            });
                         }
                     }
                 };

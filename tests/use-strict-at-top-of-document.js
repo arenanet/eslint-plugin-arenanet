@@ -22,6 +22,11 @@ function test() {}
             code : `
 function test() {}
 `,
+            output : `
+"use strict";
+
+function test() {}
+`,
             errors : [{ message : error }]
         },
     ]
