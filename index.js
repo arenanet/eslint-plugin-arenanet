@@ -88,7 +88,7 @@ module.exports = {
                                 context,
                                 node,
                                 message : errors.ERROR_MUST_AWAIT_PLAYWRIGHT_EXPECT,
-                                fix : function(fixer) {
+                                fix(fixer) {
                                     return fixer.insertTextBefore(node, "await ");
                                 }
                             });
@@ -162,7 +162,7 @@ module.exports = {
                                 node,
                                 message : errors.ERROR_USE_STRICT_AT_TOP,
                                 fix(fixer) {
-                                    fixer.insertTextBefore(node, `"use strict";\n\n`);
+                                    return fixer.insertTextBefore(node, `"use strict";\n\n`);
                                 }
                             });
                         }
